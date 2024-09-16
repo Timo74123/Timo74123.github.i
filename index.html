@@ -1,0 +1,60 @@
+<!--
+Nom: Hede
+Prenom: Timoleon
+Date: 09/09/2024
+Description: Afficher les infos de donnees
+Version: 1
+-->
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liste des pays</title>
+    <link rel="manifest" href="/manifest.webmanifest">
+</head>
+
+<body>
+    <h1>Liste des pays et leurs drapeaux</h1>
+    <ul id="liste-pays"></ul>
+
+    <script>
+
+        const url = "https://restcountries.com/v3.1/all";
+
+        //fonction pour lire tout les pays
+        async function lireTousLesPays() {
+            const reponse = await fetch(url);
+            const myText = await reponse.json();
+            return myText;
+        }
+        const listePays = document.getElementById("liste-pays");
+
+        //fonction pour afficher tout les pays
+        async function afficherPays() {
+            const Pays = await lireTousLesPays();
+            let html = "";
+
+            Pays.forEach(pays => {
+                const nomPays = pays.name.common;
+                const drapeauURL = pays.flags.png; // On récupère l'URL du drapeau
+
+                // Ajout du nom du pays et du drapeau dans la liste
+                html += `
+                    <li>
+                        ${nomPays} <br>
+                        <img src="${drapeauURL}" alt="Drapeau de ${nomPays}" width="100">
+                    </li>
+                `;
+            });
+
+            listePays.innerHTML = html;
+
+        }
+        afficherPays();
+    </script>
+
+</body>
+
+</html>
